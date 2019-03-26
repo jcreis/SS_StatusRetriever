@@ -53,8 +53,6 @@ public class Commands {
         this.output.status();
     }
 
-
-
     @ShellMethod(value = "Add numbers.", key = "add")
     public int add(int a, int b) {
         return a + b;

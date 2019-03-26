@@ -11,14 +11,14 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 @Service
 public class OutputService implements InitializingBean {
-
-    //mapper.writeValue(new File("/main/resources/<name-of-file>"))
-
 
     /*
      ######################################################
@@ -26,75 +26,62 @@ public class OutputService implements InitializingBean {
      ######################################################
     */
 
-    //TODO
+
     public void poll() {
         /*
         -> Retrieves the status from of all configured services:
             -> Outputs results of all services
             -> Saves the result to local storage (don't use a database)
 
-            -> Bonus: Pass an argument only to poll in order to retrieve a specific set of services (eg: --
+            //TODO -> Bonus: Pass an argument only to poll in order to retrieve a specific set of services (eg: --
                 only=github,slack)
-            -> Bonus: Pass an argument exclude to poll in order to exclude a specific set of services (eg: --
+            //TODO -> Bonus: Pass an argument exclude to poll in order to exclude a specific set of services (eg: --
                 exclude=slack)
          */
 
-        System.out.println("This is the poll shell command.");
+        System.out.println("This is the POLL shell command.");
 
-        Gson gson = new GsonBuilder().create();
-        EndpointList list = null;
-        URL url = null;
-        String output = new String();
+        String output = getFromServices();
 
-        try {
-            list = gson.fromJson(new FileReader("src/main/resources/config.json"), EndpointList.class);
-
-
-            for(int i = 0; i<list.getServices().size(); i++) {
-                url = new URL(list.getServices().get(i).getUrl());
-                HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                con.setRequestMethod("GET");
-
-                output = output + "["+list.getServices().get(i).toString() + "] | status > "
-                        +  con.getResponseMessage() + "\n";
-
-                System.out.println("Service > ["+list.getServices().get(i).toString() + "] | status > "
-                        +  con.getResponseMessage());
-            }
-
-            try(Writer writer = new BufferedWriter(new OutputStreamWriter
-                    (new FileOutputStream("src/main/resources/output.txt"), "utf-8"))) {
-                writer.write(output);
-
-                // TODO: Clear output.txt everytime <poll> runs
-
-            }
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //System.out.println("Services >>>> " + list.getServices() );
+        saveToFile(output);
 
     }
 
-    //TODO
     public void fetch(){
 
         /*
         -> Retrieves the status from of all configured services with a given interval (default interval: 5 seconds):
             -> Saves the result to local storage (don't use a database)
             -> Outputs results of all services
-            -> Configurable polling interval, with default of 5 seconds (eg: --refresh=60)
+            //TODO -> Configurable polling interval, with default of 5 seconds (eg: --refresh=60)
 
-            -> Bonus: Pass the argument only to fetch in order to retrieve a specific set of services (eg: --
+            //TODO -> Bonus: Pass the argument only to fetch in order to retrieve a specific set of services (eg: --
                 only=github,slack)
-            -> Bonus: Pass the argument *exclude to fetch in order to exclude a specific set of services (eg: --
+            //TODO -> Bonus: Pass the argument *exclude to fetch in order to exclude a specific set of services (eg: --
                 exclude=slack)
          */
 
+        System.out.println("This is the FETCH shell command.");
+        System.out.println("The recursion will end after 5 loops, or write 'exit' and run the program again.");
+
+        long defaultTimer = 5000L;
+
+        Timer t = new Timer();
+
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                String output = getFromServices();
+
+                saveToFile(output);
+                System.out.println("ola");
+
+            }
+
+        };
+        t.schedule(task,0L, defaultTimer);
+
+        //TODO -> doesnt finish
     }
 
     //TODO
@@ -158,7 +145,61 @@ public class OutputService implements InitializingBean {
     }
 
 
+    private String getFromServices(){
+        Gson gson = new GsonBuilder().create();
+        EndpointList list = null;
+        URL url = null;
+        String output = new String();
 
+        try {
+            list = gson.fromJson(new FileReader("src/main/resources/config.json"), EndpointList.class);
+
+
+            // Fetch info from sites in the config.json
+
+            for (int i = 0; i < list.getServices().size(); i++) {
+                url = new URL(list.getServices().get(i).getUrl());
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                con.setRequestMethod("GET");
+
+                output = output + "[" + list.getServices().get(i).toString() + "] | status > "
+                        + con.getResponseMessage() + "\n";
+
+                System.out.println("Service > [" + list.getServices().get(i).toString() + "] | status > "
+                        + con.getResponseMessage());
+            }
+        } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
+        } catch (ProtocolException e1) {
+            e1.printStackTrace();
+        } catch (MalformedURLException e1) {
+            e1.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+
+
+        return output;
+    }
+
+    private void saveToFile(String output) {
+        try {
+            File f = new File("src/main/resources/output.txt");
+
+            // Clear output.txt if already writen
+            if (f.exists()) {
+                f.delete();
+            }
+
+            // Writes output into output.txt
+            FileWriter out = new FileWriter(f);
+            out.write(output);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
     @Override
