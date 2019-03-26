@@ -1,0 +1,13 @@
+{
+    "services": [{"id": "github",
+                "name": "GitHub",
+                "url": "https://status.github.com/messages"},
+
+                {"id": "slack",
+                "name": "Slack",
+                "url": "https://status.slack.com/"},
+
+                {"id": "bitbucket",
+                "name": "Bitbucket",
+                "url": "https://status.bitbucket.org/"}]
+}

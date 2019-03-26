@@ -1,0 +1,3 @@
+[github - GitHub - https://status.github.com/messages] | status > Not Found
+[slack - Slack - https://status.slack.com/] | status > OK
+[bitbucket - Bitbucket - https://status.bitbucket.org/] | status > OK
