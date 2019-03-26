@@ -13,6 +13,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -25,6 +27,9 @@ public class OutputService implements InitializingBean {
      # VER https://www.youtube.com/watch?v=h6nMjjxJWjk&t= #
      ######################################################
     */
+
+    private static final String OUTPUT_PATH = "src/main/resources/output.txt";
+    private static final String CONFIG_PATH = "src/main/resources/config.json";
 
 
     public void poll() {
@@ -43,11 +48,12 @@ public class OutputService implements InitializingBean {
 
         String output = getFromServices();
 
-        saveToFile(output);
+        saveToFile(OUTPUT_PATH, output);
 
     }
 
     public void fetch(){
+        // TODO: Receber argumentos
 
         /*
         -> Retrieves the status from of all configured services with a given interval (default interval: 5 seconds):
@@ -73,7 +79,7 @@ public class OutputService implements InitializingBean {
             public void run() {
                 String output = getFromServices();
 
-                saveToFile(output);
+                saveToFile(OUTPUT_PATH, output);
                 System.out.println("ola");
 
             }
@@ -84,25 +90,44 @@ public class OutputService implements InitializingBean {
         //TODO -> doesnt finish
     }
 
-    //TODO
+
     public void history(){
 
         /*
         -> Outputs all the data from the local storage:
-            -> Bonus: Pass the argument only to history in order to retrieve the history of a specific set of
+            //TODO -> Bonus: Pass the argument only to history in order to retrieve the history of a specific set of
                 services (eg: --only=github)
          */
+        System.out.println("This is the HISTORY shell command.");
+
+        String output = readFromFile(OUTPUT_PATH);
+        System.out.println("History from output.txt >>>>> \n"+ output);
+
+        //TODO: historico so guarda 1x o output (github, bitbucket, slack),
+        // não guarda [(github, bitbucket, slack)(github, bitbucket, slack)]
 
     }
 
     //TODO
     public void backup(){
+        // TODO: Receber argumentos (file path onde gravar)
 
         /*
-        -> Takes an argument (path with the file name) and saves the currect local storage:
-            -> Bonus: Save to a simple .txt file, with a custom format (eg: --format=txt)
-            -> Bonus: Save to a simple .csv file, with row data separated by commas (eg: --format=csv)
+        -> Takes an argument (path with the file name) and saves the correct local storage:
+            // TODO:-> Bonus: Save to a simple .txt file, with a custom format (eg: --format=txt)
+            // TODO:-> Bonus: Save to a simple .csv file, with row data separated by commas (eg: --format=csv)
          */
+        System.out.println("This is the BACKUP shell command.");
+
+        String filePath = "/home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt";
+
+        // Reads data from output.txt file
+        String outputInfo = readFromFile(OUTPUT_PATH);
+
+        // Saves data from output.txt into the filePath
+        saveToFile(filePath, outputInfo);
+
+        System.out.println("backup file written into: "+filePath);
 
     }
 
@@ -117,6 +142,19 @@ public class OutputService implements InitializingBean {
             # HINT #: Don't forget to validate the content of the import file before starting the import.
             ########
          */
+
+        // TODO: validate to .txt, .csv
+
+        System.out.println("This is the RESTORE shell command.");
+
+        String filePath = "/home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt";
+
+        // Reads data from backup.txt file
+        String newOutputInfo = readFromFile(filePath);
+
+        // Saves data from filePath into the output.txt
+        saveToFile(OUTPUT_PATH, newOutputInfo);
+
     }
 
     //TODO
@@ -145,6 +183,7 @@ public class OutputService implements InitializingBean {
     }
 
 
+    // Reads the config.json, sends GETs to urls and prints the info
     private String getFromServices(){
         Gson gson = new GsonBuilder().create();
         EndpointList list = null;
@@ -152,7 +191,7 @@ public class OutputService implements InitializingBean {
         String output = new String();
 
         try {
-            list = gson.fromJson(new FileReader("src/main/resources/config.json"), EndpointList.class);
+            list = gson.fromJson(new FileReader(CONFIG_PATH), EndpointList.class);
 
 
             // Fetch info from sites in the config.json
@@ -182,11 +221,12 @@ public class OutputService implements InitializingBean {
         return output;
     }
 
-    private void saveToFile(String output) {
+    // Saves info into output.txt file as a String
+    private void saveToFile(String filePath, String output) {
         try {
-            File f = new File("src/main/resources/output.txt");
+            File f = new File(filePath);
 
-            // Clear output.txt if already writen
+            // Clear output.txt if already written
             if (f.exists()) {
                 f.delete();
             }
@@ -199,6 +239,22 @@ public class OutputService implements InitializingBean {
             e.printStackTrace();
         }
 
+    }
+
+    // Shows the info in the output.txt file
+    private String readFromFile(String filePath) {
+        try {
+            String output = new String(Files.readAllBytes(Paths.get(filePath)));
+
+            //System.out.println("Output from saveToFile >>>>> \n"+ output);
+
+            return output;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 
