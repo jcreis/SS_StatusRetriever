@@ -15,6 +15,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -32,52 +33,62 @@ public class OutputService implements InitializingBean {
     private static final String CONFIG_PATH = "src/main/resources/config.json";
 
 
-    public void poll() {
+    public void poll(String only, String exclude) {
         /*
         -> Retrieves the status from of all configured services:
             -> Outputs results of all services
             -> Saves the result to local storage (don't use a database)
 
-            //TODO -> Bonus: Pass an argument only to poll in order to retrieve a specific set of services (eg: --
+            -> Bonus: Pass an argument only to poll in order to retrieve a specific set of services (eg: --
                 only=github,slack)
-            //TODO -> Bonus: Pass an argument exclude to poll in order to exclude a specific set of services (eg: --
+            -> Bonus: Pass an argument exclude to poll in order to exclude a specific set of services (eg: --
                 exclude=slack)
+                //TODO: Can only receive 1 argument in --only / --exclude command
          */
 
         System.out.println("This is the POLL shell command.");
 
-        String output = getFromServices();
+        System.out.println("--only input > "+only + " size "+only.length());
+        System.out.println("--exclude input > "+exclude+ " size "+exclude.length());
+
+        System.out.println("onlyEndpoints set to: "+only+" and exludeEndpoints set to: "+exclude);
+
+        String output = getFromServices(only, exclude);
 
         saveToFile(OUTPUT_PATH, output);
 
     }
 
-    public void fetch(){
-        // TODO: Receber argumentos
+
+    public void fetch(String inputTimer, String only, String exclude){
 
         /*
         -> Retrieves the status from of all configured services with a given interval (default interval: 5 seconds):
             -> Saves the result to local storage (don't use a database)
             -> Outputs results of all services
-            //TODO -> Configurable polling interval, with default of 5 seconds (eg: --refresh=60)
+            -> Configurable polling interval, with default of 5 seconds (eg: --refresh=60)
 
-            //TODO -> Bonus: Pass the argument only to fetch in order to retrieve a specific set of services (eg: --
+            -> Bonus: Pass the argument only to fetch in order to retrieve a specific set of services (eg: --
                 only=github,slack)
-            //TODO -> Bonus: Pass the argument *exclude to fetch in order to exclude a specific set of services (eg: --
+            -> Bonus: Pass the argument *exclude to fetch in order to exclude a specific set of services (eg: --
                 exclude=slack)
+                //TODO: Can only receive 1 argument in --only / --exclude command
+                //TODO: Task doesn't finish
          */
 
         System.out.println("This is the FETCH shell command.");
         System.out.println("The recursion will end after 5 loops, or write 'exit' and run the program again.");
 
-        long defaultTimer = 5000L;
+        // Receive timer from shell (in seconds) and translate to milliseconds
+        long timer = Long.valueOf(inputTimer).longValue() * 1000;
+        System.out.println("timer value = "+(timer/1000)+"s");
 
         Timer t = new Timer();
 
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                String output = getFromServices();
+                String output = getFromServices(only, exclude);
 
                 saveToFile(OUTPUT_PATH, output);
                 System.out.println("ola");
@@ -85,33 +96,32 @@ public class OutputService implements InitializingBean {
             }
 
         };
-        t.schedule(task,0L, defaultTimer);
+        t.schedule(task,0L, timer);
 
-        //TODO -> doesnt finish
+
     }
 
 
-    public void history(){
+    public void history(String only){
 
         /*
         -> Outputs all the data from the local storage:
-            //TODO -> Bonus: Pass the argument only to history in order to retrieve the history of a specific set of
+            -> Bonus: Pass the argument only to history in order to retrieve the history of a specific set of
                 services (eg: --only=github)
+            //TODO: historico so guarda 1x o output (github, bitbucket, slack),
+                    não guarda [(github, bitbucket, slack)(github, bitbucket, slack)]
+
+            //TODO: ver no readFromFile();
          */
         System.out.println("This is the HISTORY shell command.");
 
-        String output = readFromFile(OUTPUT_PATH);
+        String output = readFromFile(OUTPUT_PATH, only);
         System.out.println("History from output.txt >>>>> \n"+ output);
-
-        //TODO: historico so guarda 1x o output (github, bitbucket, slack),
-        // não guarda [(github, bitbucket, slack)(github, bitbucket, slack)]
 
     }
 
-    //TODO
-    public void backup(){
-        // TODO: Receber argumentos (file path onde gravar)
 
+    public void backup(String path){
         /*
         -> Takes an argument (path with the file name) and saves the correct local storage:
             // TODO:-> Bonus: Save to a simple .txt file, with a custom format (eg: --format=txt)
@@ -119,20 +129,20 @@ public class OutputService implements InitializingBean {
          */
         System.out.println("This is the BACKUP shell command.");
 
-        String filePath = "/home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt";
+        //String filePath = "/home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt";
 
         // Reads data from output.txt file
-        String outputInfo = readFromFile(OUTPUT_PATH);
+        String outputInfo = readFromFile(OUTPUT_PATH,"");
 
         // Saves data from output.txt into the filePath
-        saveToFile(filePath, outputInfo);
+        saveToFile(path, outputInfo);
 
-        System.out.println("backup file written into: "+filePath);
+        System.out.println("backup file written into: "+path);
 
     }
 
-    //TODO
-    public void restore(){
+
+    public void restore(String path, boolean merge){
 
         /*
         -> Takes an argument (path with the file name) and restores the data in the file into current local storage.
@@ -147,31 +157,53 @@ public class OutputService implements InitializingBean {
 
         System.out.println("This is the RESTORE shell command.");
 
-        String filePath = "/home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt";
+        //String filePath = "/home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt";
 
-        // Reads data from backup.txt file
-        String newOutputInfo = readFromFile(filePath);
-
-        // Saves data from filePath into the output.txt
-        saveToFile(OUTPUT_PATH, newOutputInfo);
-
+        if(!merge) {
+            // Reads data from backup.txt file
+            String newOutputInfo = readFromFile(path, "");
+            // Saves data from filePath into the output.txt
+            saveToFile(OUTPUT_PATH, newOutputInfo);
+        }
+        else{
+            // TODO: Overwrite the file, merging the previous content with the new one (on the filePath)
+        }
     }
 
-    //TODO
+
     public void services(){
         /*
         -> Outputs all services defined in the configuration file and their respective endpoint.
          */
+        System.out.println("This is the SERVICES shell command.");
+        Gson gson = new GsonBuilder().create();
+        EndpointList list = null;
 
+        try {
+            list = gson.fromJson(new FileReader(CONFIG_PATH), EndpointList.class);
+
+            for(int i=0; i<list.getServices().size(); i++){
+                System.out.println("Service: "+list.getServices().get(i).getName()
+                        +" | Endpoint: " + list.getServices().get(i).getUrl());
+            }
+            //String output = list.getServices().toString();
+            //System.out.println("Output > \n" + output);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
-    //TODO
+
+    //TODO -> igual ao help Build-In Command ???
     public void help(){
         /*
         -> Outputs all available CLI commands
-         */
+        */
+        System.out.println("Available CLI commands: \n" +
+                " poll\n fetch\n history\n backup\n restore\n services\n help1\n status");
 
     }
+
 
     //BONUS METHOD //TODO
     public void status(){
@@ -184,7 +216,8 @@ public class OutputService implements InitializingBean {
 
 
     // Reads the config.json, sends GETs to urls and prints the info
-    private String getFromServices(){
+    private String getFromServices(String only, String exclude){
+
         Gson gson = new GsonBuilder().create();
         EndpointList list = null;
         URL url = null;
@@ -195,18 +228,46 @@ public class OutputService implements InitializingBean {
 
 
             // Fetch info from sites in the config.json
+            // ex: poll
+            if(only.equals("") && exclude.equals("")) {
 
-            for (int i = 0; i < list.getServices().size(); i++) {
-                url = new URL(list.getServices().get(i).getUrl());
-                HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                con.setRequestMethod("GET");
+                for (int i = 0; i < list.getServices().size(); i++) {
+                    url = new URL(list.getServices().get(i).getUrl());
+                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                    con.setRequestMethod("GET");
 
-                output = output + "[" + list.getServices().get(i).toString() + "] | status > "
-                        + con.getResponseMessage() + "\n";
+                    output = output + "[" + list.getServices().get(i).toString() + "] | status > "
+                            + con.getResponseMessage() + "\n";
 
-                System.out.println("Service > [" + list.getServices().get(i).toString() + "] | status > "
-                        + con.getResponseMessage());
+                    System.out.println("Service > [" + list.getServices().get(i).toString() + "] | status > "
+                            + con.getResponseMessage());
+
+                }
             }
+            else{
+                for (int i = 0; i < list.getServices().size(); i++) {
+
+                    url = new URL(list.getServices().get(i).getUrl());
+                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                    con.setRequestMethod("GET");
+
+                    if(only.length()>0 && list.getServices().get(i).getId().equals(only)) {
+                        output = output + "[" + list.getServices().get(i).toString() + "] | status > "
+                                + con.getResponseMessage() + "\n";
+
+                        System.out.println("Service > [" + list.getServices().get(i).toString() + "] | status > "
+                                + con.getResponseMessage());
+                    }
+                    else if(exclude.length()>0 && !list.getServices().get(i).getId().equals(exclude)){
+                        output = output + "[" + list.getServices().get(i).toString() + "] | status > "
+                                + con.getResponseMessage() + "\n";
+
+                        System.out.println("Service > [" + list.getServices().get(i).toString() + "] | status > "
+                                + con.getResponseMessage());
+                    }
+                }
+            }
+
         } catch (FileNotFoundException e1) {
             e1.printStackTrace();
         } catch (ProtocolException e1) {
@@ -216,7 +277,6 @@ public class OutputService implements InitializingBean {
         } catch (IOException e1) {
             e1.printStackTrace();
         }
-
 
         return output;
     }
@@ -242,19 +302,25 @@ public class OutputService implements InitializingBean {
     }
 
     // Shows the info in the output.txt file
-    private String readFromFile(String filePath) {
+    private String readFromFile(String filePath, String only) {
+        String output = new String();
         try {
-            String output = new String(Files.readAllBytes(Paths.get(filePath)));
+            if(only.equals("")){
+                output = new String(Files.readAllBytes(Paths.get(filePath)));
+            }
+            else{
+                //TODO: 1- pôr output em JSON em vez de .txt
+                //      2- filtrar pelo id dos JSON nodes
+            }
 
             //System.out.println("Output from saveToFile >>>>> \n"+ output);
 
-            return output;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return output;
     }
 
 

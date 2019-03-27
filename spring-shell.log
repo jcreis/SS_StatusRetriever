@@ -88,3 +88,63 @@
 1553630368049:backup
 1553630370997:restore
 1553630380204:history
+1553636344455:services
+1553637019803:help
+1553685823683:help1
+1553686575249:help
+1553686596361:fetch --timer 1000
+1553686618235:t
+1553686990231:fetch timer 10
+1553687014095:fetch --timer 10
+1553687097583:fetch
+1553687423638:poll --only a b
+1553687914588:poll --only a b null null null
+1553688626793:poll
+1553688636545:poll --only a b c d
+1553688653060:poll --only a,b,d
+1553688681074:poll --only github,slack --exclude bitbucket
+1553689691614:poll
+1553689702456:poll --only a b
+1553689721989:poll --only a b d c d
+1553689899801:poll
+1553689917135:poll --only github
+1553689928088:poll --exlude bitbucket
+1553690017692:poll --exlude a
+1553690024828:poll --only a
+1553690042125:poll --only github --exclude slack
+1553690102413:poll --only a
+1553690118178:poll --only a --exlude b
+1553690137161:poll
+1553690854824:poll --only a
+1553690869858:poll --exclude a
+1553690891300:poll
+1553690895635:poll --only a
+1553690904528:poll --exclude b
+1553690912086:poll --only a --exclude b
+1553691442489:poll
+1553701624877:poll --only github
+1553703016738:poll
+1553703026278:poll only github
+1553703038229:poll --only github
+1553703683376:poll
+1553703693257:poll --only github
+1553703706749:poll --exclude github
+1553704120887:fetch
+1553704135127:exit
+1553704167155:fetch -timer 10
+1553704173899:fetch --timer 10
+1553704220551:fetch
+1553704262444:fetch --timer 10
+1553704359582:fetch --timer 10 --only github
+1553704373711:exit
+1553704406723:fetch --only github
+1553704422178:exit
+1553704441259:fetch --exclude bitbucket
+1553704450638:exit
+1553705112249:poll
+1553705141404:poll --only github
+1553705218425:poll --only bitbucket
+1553705237286:poll --exclude bitbucket
+1553705778171:backup /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt
+1553705805296:poll --only slack
+1553705818007:backup /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt
