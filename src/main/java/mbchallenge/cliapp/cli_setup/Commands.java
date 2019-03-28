@@ -1,8 +1,6 @@
 package mbchallenge.cliapp.cli_setup;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import mbchallenge.cliapp.model.EndpointList;
+
 import mbchallenge.cliapp.service.OutputService;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
@@ -48,8 +46,8 @@ public class Commands {
     }
 
     @ShellMethod(value = "Saves local storage into given file", key = "backup")
-    public void backup(String filePath){
-        this.output.backup(filePath);
+    public void backup(String filePath, @ShellOption(value = "--format", defaultValue = "txt")String type){
+        this.output.backup(filePath, type);
     }
 
     @ShellMethod(value = "Restores the data of a given file into local storage", key = "restore")
@@ -72,8 +70,8 @@ public class Commands {
         this.output.status();
     }
 
-    @ShellMethod(value = "Add numbers.", key = "add")
-    public int add(int a, int b) {
-        return a + b;
+    @ShellMethod(value = "Stop fetch command.", key = "stop")
+    public void stop() {
+        this.output.stopFetch();
     }
 }

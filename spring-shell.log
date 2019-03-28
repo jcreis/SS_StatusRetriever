@@ -148,3 +148,55 @@
 1553705778171:backup /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt
 1553705805296:poll --only slack
 1553705818007:backup /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt
+1553723232884:help
+1553723246723:poll
+1553723262862:fetch --except github
+1553723269960:fetch --exclude github
+1553723288970:exit
+1553726395737:help
+1553726405141:poll
+1553726443861:poll --exclude bitbucket
+1553727319598:poll
+1553729562009:history
+1553730308131:history --only github
+1553730700901:poll
+1553730790726:poll --exclude slack
+1553730837947:history --only slack
+1553730849624:history --only github
+1553731030767:poll
+1553731126381:history
+1553731200058:poll
+1553731209410:history
+1553731285270:poll
+1553731293076:history
+1553731397004:services
+1553731404982:help1
+1553731473101:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt
+1553731542948:backup /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt
+1553731570145:backup /home/joaoreis/Desktop/challenge_mb/backup_test/backup.json
+1553731675691:backup /home/joaoreis/Desktop/challenge_mb/backup_test/backup.csv
+1553732272871:fetch
+1553732293618:stop
+1553732304084:exit
+1553732335902:fetch
+1553732346379:poll
+1553733637903:fetch
+1553733676814:stop
+1553733685357:history
+1553733843414:fetch
+1553733857798:stop
+1553733860520:history
+1553734087111:fetch
+1553734092696:stop
+1553734097463:istory
+1553734100168:history
+1553736136866:poll
+1553736145601:history
+1553736191851:backup /home/joaoreis/Desktop/challenge_mb/backup_test --format cvs
+1553736223550:backup /home/joaoreis/Desktop/challenge_mb/backup_test --format csv
+1553736257481:backup /home/joaoreis/Desktop/challenge_mb/backup_test --format cvs
+1553736349230:backup /home/joaoreis/Desktop/challenge_mb/backup_test/backup --format cvs
+1553736370238:backup /home/joaoreis/Desktop/challenge_mb/backup_test/alala --format csv
+1553736404289:backup /home/joaoreis/Desktop/challenge_mb/backup_test/popopo --format csv
+1553736479413:backup /home/joaoreis/Desktop/challenge_mb/backup_test/hihihi--format csv
+1553736527301:backup --format csv /home/joaoreis/Desktop/challenge_mb/backup_test/hihihi

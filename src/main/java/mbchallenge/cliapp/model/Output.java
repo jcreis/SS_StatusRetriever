@@ -1,19 +1,17 @@
 package mbchallenge.cliapp.model;
 
-public class Endpoint {
+public class Output {
 
-    String id, name, url;
+    String id, name, url, status;
 
-
-
-    public Endpoint(String id, String name, String url) {
+    public Output(String id, String name, String url, String status) {
         this.id = id;
         this.name = name;
         this.url = url;
+        this.status = status;
     }
 
-    public Endpoint(){
-
+    public Output() {
     }
 
     public String getId() {
@@ -40,8 +38,16 @@ public class Endpoint {
         this.url = url;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
-        return id + " - " + name + " - " + url;
+        return id + " - " + name + " - " + url + " - "+status;
     }
 }

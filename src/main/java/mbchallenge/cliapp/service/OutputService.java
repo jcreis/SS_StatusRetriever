@@ -3,7 +3,10 @@ package mbchallenge.cliapp.service;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import mbchallenge.cliapp.model.Endpoint;
 import mbchallenge.cliapp.model.EndpointList;
+import mbchallenge.cliapp.model.Output;
+import org.hibernate.validator.internal.engine.valueextraction.ArrayElement;
 import org.springframework.beans.factory.InitializingBean;
 
 import org.springframework.stereotype.Service;
@@ -15,9 +18,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 
 @Service
@@ -29,9 +30,11 @@ public class OutputService implements InitializingBean {
      ######################################################
     */
 
-    private static final String OUTPUT_PATH = "src/main/resources/output.txt";
+    private static final String OUTPUT_PATH = "src/main/resources/output.json";
     private static final String CONFIG_PATH = "src/main/resources/config.json";
 
+    private Timer t = new Timer();
+    private boolean run = false;
 
     public void poll(String only, String exclude) {
         /*
@@ -47,23 +50,26 @@ public class OutputService implements InitializingBean {
          */
 
         System.out.println("This is the POLL shell command.");
+        System.out.println();
+        System.out.println("--only input > "+only);
+        System.out.println("--exclude input > "+exclude);
+        System.out.println();
+        System.out.println("Poll output:");
 
-        System.out.println("--only input > "+only + " size "+only.length());
-        System.out.println("--exclude input > "+exclude+ " size "+exclude.length());
+        List<Output> output = getFromServices(only, exclude);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        // Saves data from output.json into the filePath
+        String jsonOutput = gson.toJson(output);
 
-        System.out.println("onlyEndpoints set to: "+only+" and exludeEndpoints set to: "+exclude);
-
-        String output = getFromServices(only, exclude);
-
-        saveToFile(OUTPUT_PATH, output);
+        saveToFile(OUTPUT_PATH, jsonOutput);
 
     }
 
 
     public void fetch(String inputTimer, String only, String exclude){
 
-        /*
-        -> Retrieves the status from of all configured services with a given interval (default interval: 5 seconds):
+
+        /*-> Retrieves the status from of all configured services with a given interval (default interval: 5 seconds):
             -> Saves the result to local storage (don't use a database)
             -> Outputs results of all services
             -> Configurable polling interval, with default of 5 seconds (eg: --refresh=60)
@@ -73,32 +79,38 @@ public class OutputService implements InitializingBean {
             -> Bonus: Pass the argument *exclude to fetch in order to exclude a specific set of services (eg: --
                 exclude=slack)
                 //TODO: Can only receive 1 argument in --only / --exclude command
-                //TODO: Task doesn't finish
+
          */
 
         System.out.println("This is the FETCH shell command.");
-        System.out.println("The recursion will end after 5 loops, or write 'exit' and run the program again.");
+        System.out.println("Write 'stop' to stop the fetch operation.");
 
         // Receive timer from shell (in seconds) and translate to milliseconds
         long timer = Long.valueOf(inputTimer).longValue() * 1000;
-        System.out.println("timer value = "+(timer/1000)+"s");
+        System.out.println("Timer value = "+(timer/1000)+"s");
 
-        Timer t = new Timer();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                String output = getFromServices(only, exclude);
+                List<Output> output = getFromServices(only, exclude);
 
-                saveToFile(OUTPUT_PATH, output);
-                System.out.println("ola");
-
+                // Saves data from output.json into the filePath
+                String jsonOutput = gson.toJson(output);
+                saveToFile(OUTPUT_PATH, jsonOutput);
+                run=true;
             }
 
         };
-        t.schedule(task,0L, timer);
+        if(!run)
+            t.schedule(task,0L, timer);
 
+    }
 
+    // Auxiliar command to stop fetch from executing
+    public void stopFetch(){
+        t.cancel();
     }
 
 
@@ -110,38 +122,62 @@ public class OutputService implements InitializingBean {
                 services (eg: --only=github)
             //TODO: historico so guarda 1x o output (github, bitbucket, slack),
                     não guarda [(github, bitbucket, slack)(github, bitbucket, slack)]
-
-            //TODO: ver no readFromFile();
          */
         System.out.println("This is the HISTORY shell command.");
+        System.out.println("History from output.json >>>>> \n");
 
-        String output = readFromFile(OUTPUT_PATH, only);
-        System.out.println("History from output.txt >>>>> \n"+ output);
-
+        List<Output> output = readFromFile(OUTPUT_PATH, only);
     }
 
 
-    public void backup(String path){
-        /*
+    public void backup(String path, String format){
+
+/*
         -> Takes an argument (path with the file name) and saves the correct local storage:
-            // TODO:-> Bonus: Save to a simple .txt file, with a custom format (eg: --format=txt)
-            // TODO:-> Bonus: Save to a simple .csv file, with row data separated by commas (eg: --format=csv)
-         */
+            -> Bonus: Save to a simple .txt file, with a custom format (eg: --format=txt)
+            -> Bonus: Save to a simple .csv file, with row data separated by commas (eg: --format=csv)
+*/
+
+
         System.out.println("This is the BACKUP shell command.");
+        List<Output> outputInfo = new ArrayList<>();
 
-        //String filePath = "/home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt";
 
-        // Reads data from output.txt file
-        String outputInfo = readFromFile(OUTPUT_PATH,"");
 
-        // Saves data from output.txt into the filePath
-        saveToFile(path, outputInfo);
+        // Reads data from output.json file
+        outputInfo = readFromFile(OUTPUT_PATH,"");
+        if(format.equals("txt")){
 
-        System.out.println("backup file written into: "+path);
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            // Saves data from output.json into the filePath
+            String txtOutput = gson.toJson(outputInfo);
+            saveToFile(path+".txt", txtOutput);
+        }
+        else if(format.equals("csv")){
+
+            String csvOutput = writeAsCVSFile(outputInfo);
+            saveToFile(path+".csv", csvOutput);
+        }
+        System.out.println("backup file written into: "+path+"."+format);
 
     }
 
+    public String writeAsCVSFile(List<Output> outputs){
+        StringBuilder sb = new StringBuilder();
+        sb.append("id,");
+        sb.append("name,");
+        sb.append("url,");
+        sb.append("status");
 
+        for(int i=0; i<outputs.size(); i++){
+            sb.append("\n");
+            sb.append(outputs.get(i).getId()+",");
+            sb.append(outputs.get(i).getName()+",");
+            sb.append(outputs.get(i).getUrl()+",");
+            sb.append(outputs.get(i).getStatus());
+        }
+        return sb.toString();
+    }
     public void restore(String path, boolean merge){
 
         /*
@@ -161,15 +197,15 @@ public class OutputService implements InitializingBean {
 
         if(!merge) {
             // Reads data from backup.txt file
-            String newOutputInfo = readFromFile(path, "");
+            List<Output> newOutputInfo = readFromFile(path, "");
+            String aux = newOutputInfo.toString();
             // Saves data from filePath into the output.txt
-            saveToFile(OUTPUT_PATH, newOutputInfo);
+            saveToFile(OUTPUT_PATH, aux);
         }
         else{
             // TODO: Overwrite the file, merging the previous content with the new one (on the filePath)
         }
     }
-
 
     public void services(){
         /*
@@ -215,13 +251,29 @@ public class OutputService implements InitializingBean {
     }
 
 
-    // Reads the config.json, sends GETs to urls and prints the info
-    private String getFromServices(String only, String exclude){
 
-        Gson gson = new GsonBuilder().create();
-        EndpointList list = null;
-        URL url = null;
-        String output = new String();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Reads the config.json, sends GETs to urls and prints the info
+    private List<Output> getFromServices(String only, String exclude){
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        EndpointList list;
+        URL url;
+        List<Output> outputJSON = new ArrayList<>();
 
         try {
             list = gson.fromJson(new FileReader(CONFIG_PATH), EndpointList.class);
@@ -236,13 +288,19 @@ public class OutputService implements InitializingBean {
                     HttpURLConnection con = (HttpURLConnection) url.openConnection();
                     con.setRequestMethod("GET");
 
-                    output = output + "[" + list.getServices().get(i).toString() + "] | status > "
-                            + con.getResponseMessage() + "\n";
+                    Output out = new Output(list.getServices().get(i).getId(),list.getServices().get(i).getName(),
+                            list.getServices().get(i).getUrl(),con.getResponseMessage());
 
-                    System.out.println("Service > [" + list.getServices().get(i).toString() + "] | status > "
-                            + con.getResponseMessage());
+                    outputJSON.add(out);
+
+                    // Set output to save on file as a String
+                    /*output = output + "[" + list.getServices().get(i).toString() + "] | status > "
+                            + con.getResponseMessage() + "\n";*/
+
+
 
                 }
+
             }
             else{
                 for (int i = 0; i < list.getServices().size(); i++) {
@@ -252,21 +310,24 @@ public class OutputService implements InitializingBean {
                     con.setRequestMethod("GET");
 
                     if(only.length()>0 && list.getServices().get(i).getId().equals(only)) {
-                        output = output + "[" + list.getServices().get(i).toString() + "] | status > "
-                                + con.getResponseMessage() + "\n";
+                        Output out = new Output(list.getServices().get(i).getId(),list.getServices().get(i).getName(),
+                                list.getServices().get(i).getUrl(),con.getResponseMessage());
+                        outputJSON.add(out);
 
                         System.out.println("Service > [" + list.getServices().get(i).toString() + "] | status > "
                                 + con.getResponseMessage());
                     }
                     else if(exclude.length()>0 && !list.getServices().get(i).getId().equals(exclude)){
-                        output = output + "[" + list.getServices().get(i).toString() + "] | status > "
-                                + con.getResponseMessage() + "\n";
+                        Output out = new Output(list.getServices().get(i).getId(),list.getServices().get(i).getName(),
+                                list.getServices().get(i).getUrl(),con.getResponseMessage());
+                        outputJSON.add(out);
 
                         System.out.println("Service > [" + list.getServices().get(i).toString() + "] | status > "
                                 + con.getResponseMessage());
                     }
                 }
             }
+            System.out.println(gson.toJson(outputJSON));
 
         } catch (FileNotFoundException e1) {
             e1.printStackTrace();
@@ -278,10 +339,10 @@ public class OutputService implements InitializingBean {
             e1.printStackTrace();
         }
 
-        return output;
+        return outputJSON;
     }
 
-    // Saves info into output.txt file as a String
+
     private void saveToFile(String filePath, String output) {
         try {
             File f = new File(filePath);
@@ -291,9 +352,8 @@ public class OutputService implements InitializingBean {
                 f.delete();
             }
 
-            // Writes output into output.txt
             FileWriter out = new FileWriter(f);
-            out.write(output);
+            out.append(output);
             out.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -301,17 +361,37 @@ public class OutputService implements InitializingBean {
 
     }
 
-    // Shows the info in the output.txt file
-    private String readFromFile(String filePath, String only) {
-        String output = new String();
+    // Shows the info in the output file
+    private List<Output> readFromFile(String filePath, String only) {
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        List<Output> readJSON;
+        List<Output> outputJSON = new ArrayList<>();
+
         try {
+
+            // Reads info from file
+            Output[] aux=gson.fromJson(new FileReader(filePath), Output[].class);
+            readJSON = Arrays.asList(aux);
+
             if(only.equals("")){
-                output = new String(Files.readAllBytes(Paths.get(filePath)));
+                // Stores every endpoint at json into outputJson
+                for(int i=0; i<readJSON.size(); i++){
+                    Output output = new Output(readJSON.get(i).getId(),readJSON.get(i).getName(),
+                            readJSON.get(i).getUrl(), readJSON.get(i).getStatus());
+                    outputJSON.add(output);
+                }
             }
             else{
-                //TODO: 1- pôr output em JSON em vez de .txt
-                //      2- filtrar pelo id dos JSON nodes
+                for(int i=0; i<readJSON.size(); i++){
+                    if(only.equals(readJSON.get(i).getId())) {
+                        Output output = new Output(readJSON.get(i).getId(), readJSON.get(i).getName(),
+                                readJSON.get(i).getUrl(), readJSON.get(i).getStatus());
+                        outputJSON.add(output);
+                    }
+                }
             }
+            System.out.println(gson.toJson(outputJSON));
 
             //System.out.println("Output from saveToFile >>>>> \n"+ output);
 
@@ -320,7 +400,7 @@ public class OutputService implements InitializingBean {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return output;
+        return outputJSON;
     }
 
 
