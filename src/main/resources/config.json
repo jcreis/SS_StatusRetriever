@@ -1,13 +1,21 @@
 {
-  "services": [{"id": "github",
+  "services": [{"id": "bitbucket",
+    "name": "Bitbucket",
+    "url": "https://status.bitbucket.org/"},
+
+    {"id": "github",
     "name": "GitHub",
-    "url": "https://status.github.com/messages"},
+    "url": "https://status.github.com/"},
 
     {"id": "slack",
       "name": "Slack",
       "url": "https://status.slack.com/"},
 
-    {"id": "bitbucket",
-      "name": "Bitbucket",
-      "url": "https://status.bitbucket.org/"}]
+    {"id": "gitlab",
+      "name": "GitLab",
+      "url": "https://status.gitlab.com"},
+
+    {"id": "google",
+      "name": "Google",
+      "url": "https://www.google.com/appsstatus"}]
 }

@@ -200,3 +200,201 @@
 1553736404289:backup /home/joaoreis/Desktop/challenge_mb/backup_test/popopo --format csv
 1553736479413:backup /home/joaoreis/Desktop/challenge_mb/backup_test/hihihi--format csv
 1553736527301:backup --format csv /home/joaoreis/Desktop/challenge_mb/backup_test/hihihi
+1553783699297:help1
+1553783760949:poll --only github,bitbucket
+1553783796963:poll --only=bitbucket
+1553783806218:help
+1553784023388:poll
+1553784472717:fetch
+1553784488440:stop
+1553784585359:fetch
+1553784621087:stop
+1553784710775:fetch
+1553784719442:stop
+1553784851262:poll
+1553784881813:fetch
+1553784896539:stop
+1553785047856:poll
+1553785541002:fetch
+1553785550220:stop
+1553786915644:poll --only bitbucket
+1553787037934:poll --only slack,github
+1553787051326:fetch --only slack,github
+1553787059190:stop
+1553787114616:poll --exclude slack,bitbucket
+1553787164645:poll --exclude bitbucket
+1553787222619:poll --exclude bitbucket,slack
+1553787291654:poll --exlude bitbucket,slack
+1553787331668:poll --exclude bitbucket
+1553787353929:fetch --exclude bitbucket,slack
+1553787362480:stop
+1553787372505:poll --exclude slack
+1553787388546:poll --exclude slack,github
+1553787478858:poll --exclude bitbucket,slack
+1553788169737:poll --only bitbucket
+1553788182247:poll --only bitbucket,github,slack
+1553788203056:poll --exclude bitbucket,github,slack
+1553788209619:poll --only la
+1553788219624:poll --exclude la,la
+1553788792135:fetch --timer 30
+1553788805335:status
+1553788812140:history
+1553788823004:services
+1553788862984:stop
+1553789116320:fetch --timer 10
+1553789146326:poll
+1553789166484:stop
+1553789240108:poll --only slack
+1553789275578:poll --only github
+1553789751229:poll
+1553795019614:poll --only github,slack
+1553795044116:poll --only github
+1553798204033:poll --only=bitbucket
+1553798332174:fetch --refresh 10 --only bitbucket
+1553798379616:fetch --timer 10
+1553798429133:fetch --timer
+1553798435555:fetch --timer 10
+1553798440235:fetch --refresh 10
+1553798447139:stop
+1553798627029:clear
+1553798633793:exit
+1553798646126:clear
+1553798648304:script
+1553798657185:stacktrace
+1553798662660:clear
+1553798665961:connect
+1553798672229:register module
+1553798676723:add
+1553798682574:authenticate
+1553798685941:blow-up
+1553798689858:clear
+1553798968611:help
+1553799300208:restore --merge
+1553799325066:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt --merge
+1553799643561:help
+1553799747886:fetch --timer
+1553800026546:help
+1553800194135:poll
+1553800404953:services
+1553800590425:history
+1553800622253:poll
+1553800629938:history
+1553800718990:stacktrace
+1553800746916:history
+1553800750737:stacktrace
+1553801008202:restore
+1553801012412:help
+1553801040805:restore {"id": "bitbucket",
+1553801067621:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt
+1553801179102:backup /home/joaoreis/Desktop/challenge_mb/backup_test/backup --format csv
+1553801352670:poll
+1553801408608:history
+1553801425464:backup /home/joaoreis/Desktop/challenge_mb/backup_test/backup --format csv
+1553801444493:backup /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt
+1553801450433:history
+1553801563451:poll
+1553801569884:hisotry
+1553801572511:history
+1553801588067:backup /home/joaoreis/Desktop/challenge_mb/backup_test/backup --format csv
+1553801597378:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.csv
+1553802327486:poll
+1553802348189:backup /home/joaoreis/Desktop/challenge_mb/backup_test/backup --format csv
+1553802362985:poll --only google
+1553802390085:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.csv
+1553804190353:backup /home/joaoreis/Desktop/challenge_mb/backup_test/backup --format txt
+1553808985024:poll
+1553811165433:fetch --refresh 10
+1553811311957:stop
+1553811346561:poll
+1553812777260:fetch
+1553814899761:poll
+1553815331299:history
+1553815357487:fetch
+1553815376972:top
+1553815378299:stop
+1553815505327:poll
+1553815996631:stacktrace
+1553816063694:poll
+1553816536649:fetch
+1553816550724:stop
+1553816576829:history
+1553816613757:poll
+1553816931298:history
+1553859644505:fetch
+1553859653915:stop
+1553859667769:poll --only github
+1553859674273:history
+1553859685037:fetch --only bitbucket
+1553859833614:stop
+1553859840330:fetch --only u
+1553859844708:poll
+1553859855763:fetch --exclude google
+1553859880341:fetch --refresh 8 --exclude google
+1553859892944:stop
+1553859901803:fetch --exclude google
+1553859980081:stop
+1553860030859:fetch --only slack
+1553860064868:stop
+1553860085429:fetch --exclude bitbucket
+1553860852246:backup /home/joaoreis/Desktop/challenge_mb/backup_test --format txt
+1553860970060:backup /home/joaoreis/Desktop/challenge_mb/backup_test
+1553861121792:backup /home/joaoreis/Desktop/challenge_mb/backup_test/ --format txt
+1553861581375:poll
+1553861588178:fetch
+1553861593602:stop
+1553861604225:fetch --exclude google
+1553861642991:fetch
+1553861682841:stop
+1553861721547:fetch --exclude github
+1553861974428:fetch
+1553862013272:p
+1553862029333:stop
+1553862070784:fetch --exclude github
+1553862131970:fetch
+1553862165889:stop
+1553862175767:fetch --exclude github
+1553862249953:fetch
+1553862264309:stop
+1553862275925:fetch --exclude bitbucket
+1553862480198:fetch --refresh 60
+1553862493996:history
+1553862500035:poll
+1553862509017:poll --only google
+1553862529348:backup /home/joaoreis/Desktop/challenge_mb/backup_test --format txt
+1553862557211:exit
+1553862995662:fetch
+1553863004517:quit
+1553863027250:fetch
+1553863032522:exit
+1553863036523:quit
+1553863069781:fetch
+1553863075677:t
+1553863079221:exit
+1553863335184:fetch
+1553863340372:exit
+1553863433643:poll
+1553863442384:backup @ShellMethod(value = "Ends program", key="quit")
+1553863514637:backup /home/joaoreis/Desktop/challenge_mb/backup_test --format csv
+1553863700245:poll
+1553863745379:help
+1553863784169:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt
+1553863858309:poll
+1553863878141:fetch --refresh 10
+1553863892745:poll
+1553863908916:backup /home/joaoreis/Desktop/challenge_mb/backup_test --format txt
+1553863923230:exit
+1553863999287:fetch --refresh 15
+1553864006239:poll
+1553864024511:backup /home/joaoreis/Desktop/challenge_mb/backup_test --format txt
+1553864044939:backup /home/joaoreis/Desktop/challenge_mb/backup_test --format cvs
+1553864095153:stop
+1553864102479:backup /home/joaoreis/Desktop/challenge_mb/backup_test --format csv
+1553864130073:restore /home/joaoreis/Desktop/challenge_mb/backup_test.txt
+1553864263843:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt
+1553864431346:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.csv
+1553864454763:stacktrace
+1553865435437:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.csv
+1553865558866:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt
+1553865814723:restore Gson gson = new GsonBuilder().setPrettyPrinting().create();
+1553865835067:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt
+1553865848485:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.csv

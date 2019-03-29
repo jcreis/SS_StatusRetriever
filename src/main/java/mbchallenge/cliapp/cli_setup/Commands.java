@@ -5,10 +5,12 @@ import mbchallenge.cliapp.service.OutputService;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
+import org.springframework.shell.standard.commands.Help;
+import org.springframework.shell.standard.commands.Quit;
 
 
 @ShellComponent
-public class Commands {
+public class Commands implements Help.Command, Quit.Command{
 
     // 5sec timer by default, goes in as (String) but is processed as (Long)
     private static final String DEFAULT_TIMER = "5";
@@ -18,8 +20,6 @@ public class Commands {
     public Commands(OutputService output) {
         this.output = output;
     }
-
-
 
     /*
                 ######################################
@@ -34,9 +34,9 @@ public class Commands {
     }
 
     @ShellMethod(value = "Status from all configured services with a given interval", key = "fetch")
-    public void fetch(@ShellOption(defaultValue = DEFAULT_TIMER) String timer,
-                      @ShellOption(value = "--only", defaultValue = "") String only,
-                      @ShellOption(value = "--exclude", defaultValue = "")String exclude){
+    public void fetch(@ShellOption(value = "--refresh", defaultValue = DEFAULT_TIMER) String timer,
+                      @ShellOption(defaultValue = "") String only,
+                      @ShellOption(defaultValue = "") String exclude){
         this.output.fetch(timer, only, exclude);
     }
 
@@ -60,7 +60,7 @@ public class Commands {
         this.output.services();
     }
 
-    @ShellMethod(value = "Available CLI commands", key = "help1")
+    @ShellMethod(value = "Available CLI commands", key = "help")
     public void help(){
         this.output.help();
     }
@@ -73,5 +73,16 @@ public class Commands {
     @ShellMethod(value = "Stop fetch command.", key = "stop")
     public void stop() {
         this.output.stopFetch();
+    }
+
+    @ShellMethod(value = "Ends program", key="quit")
+    public void quit(){
+        this.output.quit();
+    }
+
+    // is there any way to make two different commands do the same?
+    @ShellMethod(value = "Ends program", key="exit")
+    public void exit(){
+        this.output.quit();
     }
 }
