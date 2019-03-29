@@ -304,10 +304,7 @@ public class OutputService implements InitializingBean {
                     /*SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy'T'HH:mm:ss.SSSXXX");
                     Date resultdate = new Date(init);*/
 
-                    Output out = new Output(list.getServices().get(i).getId(),list.getServices().get(i).getName(),
-                            list.getServices().get(i).getUrl(),con.getResponseMessage(), init);
-
-                    outputJSON.add(out);
+                    prepareOutput(list, i, init, con, outputJSON);
                     System.out.println("Service > [" + list.getServices().get(i).getId() + "] " + "time: " +init+ " | status > "
                             + con.getResponseMessage());
 
@@ -327,9 +324,7 @@ public class OutputService implements InitializingBean {
 
                         for(int j=0; j<onlyParts.length; j++){
                             if(list.getServices().get(i).getId().equals(onlyParts[j])){
-                                Output out = new Output(list.getServices().get(i).getId(),list.getServices().get(i).getName(),
-                                        list.getServices().get(i).getUrl(),con.getResponseMessage(), init);
-                                outputJSON.add(out);
+                                prepareOutput(list, i, init, con, outputJSON);
                                 System.out.println("Service > [" + list.getServices().get(i).getId() + "] " + "time: " +init+ " | status > "
                                         + con.getResponseMessage());
                             }
@@ -347,9 +342,8 @@ public class OutputService implements InitializingBean {
                             }
                         }
                         if(differenceCounter==excludeParts.length){
-                            Output out = new Output(list.getServices().get(i).getId(),list.getServices().get(i).getName(),
-                                    list.getServices().get(i).getUrl(),con.getResponseMessage(), init);
-                            outputJSON.add(out);
+
+                            prepareOutput(list, i, init, con, outputJSON);
                             System.out.println("Service > [" + list.getServices().get(i).getId() + "] " + "time: " +init+ " | status > "
                                     + con.getResponseMessage());
                         }
@@ -370,6 +364,18 @@ public class OutputService implements InitializingBean {
         }
 
         return outputJSON;
+    }
+
+    private void prepareOutput(EndpointList list, int i, long init, HttpURLConnection con, List<Output> outputJSON){
+
+        try {
+            Output out = new Output(list.getServices().get(i).getId(),list.getServices().get(i).getName(),
+                    list.getServices().get(i).getUrl(),con.getResponseMessage(), init);
+            outputJSON.add(out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void saveToFile(String filePath, List<Output> output) {
