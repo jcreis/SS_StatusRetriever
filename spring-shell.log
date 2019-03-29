@@ -398,3 +398,21 @@
 1553865814723:restore Gson gson = new GsonBuilder().setPrettyPrinting().create();
 1553865835067:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt
 1553865848485:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.csv
+1553875828716:poll
+1553875915389:exit
+1553875950428:poll
+1553875957047:exit
+1553876487138:help
+1553879081911:exit
+1553879439519:help
+1553879452245:exit
+1553879462023:help
+1553879495983:exit
+1553879504387:help
+1553879971649:exit
+1553880015572:poll
+1553880024881:fetch
+1553880045474:exit
+1553880279174:poll
+1553880384534:stacktrace
+1553880420213:poll

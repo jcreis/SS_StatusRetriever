@@ -1,14 +1,19 @@
 package mbchallenge.cliapp.model;
 
+import java.util.Date;
+
 public class Output {
 
     String id, name, url, status;
 
-    public Output(String id, String name, String url, String status) {
+    long time;
+
+    public Output(String id, String name, String url, String status, long time) {
         this.id = id;
         this.name = name;
         this.url = url;
         this.status = status;
+        this.time = time;
     }
 
     public Output() {
@@ -44,6 +49,14 @@ public class Output {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 
     @Override

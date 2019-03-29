@@ -20,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.spi.FileTypeDetector;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -31,6 +32,9 @@ public class OutputService implements InitializingBean {
      # VER https://www.youtube.com/watch?v=h6nMjjxJWjk&t= #
      ######################################################
     */
+
+    //TODO: Por outputs bonitos
+    //TODO: Tratar o time nos Outputs - por formato yyyy-mm-dd T hh:mm:ss
 
     private static final String OUTPUT_PATH = "src/main/resources/output.json";
     private static final String CONFIG_PATH = "src/main/resources/config.json";
@@ -216,10 +220,8 @@ public class OutputService implements InitializingBean {
         /*
         -> Outputs all available CLI commands
         */
-        // TODO: acho que tiro os predefinidos???
-
-        System.out.println("Available Commands:");
         System.out.println();
+        System.out.println("Available Commands:");
         System.out.println(":>poll [--only] onlyArg1,onlyArg2 [--exclude] excludeArg1,excludeArg2");
         System.out.println(":>fetch [--refresh] seconds [--only] onlyArg1,onlyArg2 [--exclude] excludeArg1,excludeArg2");
         System.out.println(":>stop");
@@ -231,11 +233,12 @@ public class OutputService implements InitializingBean {
         System.out.println(":>status");
         System.out.println(":>quit/exit");
         System.out.println();
-        System.out.println("Predefined commands of Spring Shell");
+        System.out.println("Predefined commands of Spring Shell:");
         System.out.println(":>clear");
         System.out.println(":>script");
         System.out.println(":>stacktrace");
         System.out.println();
+        System.out.println("Description of the commands:");
         System.out.println("poll: Retrieves the status from of all configured services.");
         System.out.println("fetch: Retrieves the status from of all configured services with a given interval. (default timer = 5sec)");
         System.out.println("stop: Stops fetch command");
@@ -260,7 +263,8 @@ public class OutputService implements InitializingBean {
         -> Summarizes data and displays it in a table-like fashion:
             -> Print time since webservice has't been down
             -> Mean time to failure (MTTF)
-         */
+        */
+
     }
 
 
@@ -296,12 +300,15 @@ public class OutputService implements InitializingBean {
                     url = new URL(list.getServices().get(i).getUrl());
                     HttpURLConnection con = (HttpURLConnection) url.openConnection();
                     con.setRequestMethod("GET");
+                    long init = System.currentTimeMillis();
+                    /*SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy'T'HH:mm:ss.SSSXXX");
+                    Date resultdate = new Date(init);*/
 
                     Output out = new Output(list.getServices().get(i).getId(),list.getServices().get(i).getName(),
-                            list.getServices().get(i).getUrl(),con.getResponseMessage());
+                            list.getServices().get(i).getUrl(),con.getResponseMessage(), init);
 
                     outputJSON.add(out);
-                    System.out.println("Service > [" + list.getServices().get(i).toString() + "] | status > "
+                    System.out.println("Service > [" + list.getServices().get(i).getId() + "] " + "time: " +init+ " | status > "
                             + con.getResponseMessage());
 
                 }
@@ -313,6 +320,7 @@ public class OutputService implements InitializingBean {
                     url = new URL(list.getServices().get(i).getUrl());
                     HttpURLConnection con = (HttpURLConnection) url.openConnection();
                     con.setRequestMethod("GET");
+                    long init = System.currentTimeMillis();
 
                     if(only.length()>0) {
                         String[] onlyParts=only.split(",");
@@ -320,9 +328,9 @@ public class OutputService implements InitializingBean {
                         for(int j=0; j<onlyParts.length; j++){
                             if(list.getServices().get(i).getId().equals(onlyParts[j])){
                                 Output out = new Output(list.getServices().get(i).getId(),list.getServices().get(i).getName(),
-                                        list.getServices().get(i).getUrl(),con.getResponseMessage());
+                                        list.getServices().get(i).getUrl(),con.getResponseMessage(), init);
                                 outputJSON.add(out);
-                                System.out.println("Service > [" + list.getServices().get(i).toString() + "] | status > "
+                                System.out.println("Service > [" + list.getServices().get(i).getId() + "] " + "time: " +init+ " | status > "
                                         + con.getResponseMessage());
                             }
                         }
@@ -340,9 +348,9 @@ public class OutputService implements InitializingBean {
                         }
                         if(differenceCounter==excludeParts.length){
                             Output out = new Output(list.getServices().get(i).getId(),list.getServices().get(i).getName(),
-                                    list.getServices().get(i).getUrl(),con.getResponseMessage());
+                                    list.getServices().get(i).getUrl(),con.getResponseMessage(), init);
                             outputJSON.add(out);
-                            System.out.println("Service > [" + list.getServices().get(i).toString() + "] | status > "
+                            System.out.println("Service > [" + list.getServices().get(i).getId() + "] " + "time: " +init+ " | status > "
                                     + con.getResponseMessage());
                         }
                     }
@@ -463,14 +471,14 @@ public class OutputService implements InitializingBean {
                     // Stores every endpoint at json into outputJson
                     for (int i = 0; i < readJSON.size(); i++) {
                         Output output = new Output(readJSON.get(i).getId(), readJSON.get(i).getName(),
-                                readJSON.get(i).getUrl(), readJSON.get(i).getStatus());
+                                readJSON.get(i).getUrl(), readJSON.get(i).getStatus(), readJSON.get(i).getTime());
                         outputJSON.add(output);
                     }
                 } else {
                     for (int i = 0; i < readJSON.size(); i++) {
                         if (only.equals(readJSON.get(i).getId())) {
                             Output output = new Output(readJSON.get(i).getId(), readJSON.get(i).getName(),
-                                    readJSON.get(i).getUrl(), readJSON.get(i).getStatus());
+                                    readJSON.get(i).getUrl(), readJSON.get(i).getStatus(), readJSON.get(i).getTime());
                             outputJSON.add(output);
                         }
                     }
