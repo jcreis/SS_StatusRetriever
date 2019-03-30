@@ -421,3 +421,103 @@
 1553890905244:exit
 1553890916970:poll
 1553890954092:fetch --refresh 60 --exclude google
+1553893262441:history
+1553894741304:exit
+1553894758335:history
+1553895136141:poll
+1553895194179:fetch
+1553895218602:eexit
+1553895223045:exit
+1553895372408:poll
+1553895386462:fetch
+1553895400376:quit
+1553895410020:history
+1553895456590:backup /home/joaoreis/Desktop/challenge_mb/backup_test
+1553895494718:exit
+1553895520068:backup /home/joaoreis/Desktop/challenge_mb/backup_test
+1553895555259:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt
+1553895584837:services
+1553895596734:poll
+1553895738323:exit
+1553895752351:poll
+1553895786598:exit
+1553895797219:poll
+1553895952130:exit
+1553895961300:poll
+1553896039332:exit
+1553896053194:poll
+1553896082480:exit
+1553896089837:poll
+1553896374473:exit
+1553896382858:poll
+1553896414721:poll --only bitbucket,slack
+1553896423107:history
+1553896964746:exit
+1553896998035:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt
+1553897366796:exit
+1553900717719:poll
+1553900739563:help
+1553900794315:backup /home/joaoreis/Desktop/challenge_mb/backup_test --format txt
+1553900939359:poll --exclude github,gitlab
+1553900960362:backup /home/joaoreis/Desktop/challenge_mb/backup_test --format txt
+1553901033784:poll --only github
+1553901060785:poll --only slack,gitlab
+1553901090301:help
+1553901112246:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt --merge
+1553901130925:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt merge
+1553901154054:estore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt --restore
+1553901236538:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt --merge
+1553901241334:stacktrace
+1553901344121:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt --merge
+1553901348048:stacktrace
+1553901447972:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt --merge
+1553901699999:poll --exclude github,gitlab
+1553901733565:backup /home/joaoreis/Desktop/challenge_mb/backup_test --format txt
+1553901765246:poll --only github
+1553901783339:poll --exclude bitbucket,google
+1553901813699:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt --merge
+1553902118717:poll --exclude github,gitlab
+1553902144971:backup /home/joaoreis/Desktop/challenge_mb/backup_test --format txt
+1553902178655:poll --only github
+1553902196026:poll --exclude bitbucket,google
+1553902226898:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt
+1553902393164:poll --exclude github,gitlab
+1553902419873:backup /home/joaoreis/Desktop/challenge_mb/backup_test --format txt
+1553902448376:poll --only github
+1553902461589:poll --exclude bitbucket,google
+1553902475377:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt
+1553902831813:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt --merge
+1553903018450:poll --exclude github,gitlab
+1553903029313:backup /home/joaoreis/Desktop/challenge_mb/backup_test --format txt
+1553903062890:poll --only github
+1553903073026:poll --only github,slack,gitlab
+1553903139727:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt --merge
+1553903691400:poll --only bit
+1553903704032:poll --only bitbucket,slack,google
+1553903731951:backup /home/joaoreis/Desktop/challenge_mb/backup_test --format txt
+1553903763113:poll --only github
+1553903779605:poll --only github,slack,gitlab
+1553903813617:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt --merge
+1553903991190:poll --only bitbucket,slack,google
+1553903999205:backup /home/joaoreis/Desktop/challenge_mb/backup_test --format txt
+1553904016068:poll --only github
+1553904026161:poll --only github,slack,gitlab
+1553904079553:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt
+1553904176668:poll --only bitbucket,slack,google
+1553904213445:backup /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt
+1553904236847:backup /home/joaoreis/Desktop/challenge_mb/backup_test --format txt
+1553904271648:poll --only github
+1553904282431:poll --only github,slack,gitlab
+1553904306753:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt --merge
+1553904412417:poll --only bitbucket
+1553904420527:poll --only slack,google
+1553904429440:backup /home/joaoreis/Desktop/challenge_mb/backup_test --format
+1553904440015:backup /home/joaoreis/Desktop/challenge_mb/backup_test --format txt
+1553904461394:poll --only github
+1553904476738:poll --only github,slack,gitlab
+1553904496433:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt --merge
+1553904733131:poll --only bitbucket,slack,google
+1553904748342:backup /home/joaoreis/Desktop/challenge_mb/backup_test --format txt
+1553904868231:poll --only github
+1553904877642:poll --only github,slack,gitlab
+1553904942866:restore /home/joaoreis/Desktop/challenge_mb/backup_test/backup.txt --merge

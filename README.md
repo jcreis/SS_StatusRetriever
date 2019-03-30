@@ -87,6 +87,11 @@ depending if it's used or not in the **restore** command.
 
 ## **Special attention to:**
 
+-> the file _output.json_ can't be empty to be read, if the intention is to
+start with an empty Local Storage, change the data in the _output.json_ file
+to 
+>[]
+
 -> in the **backup** command, the argument passed as pathToFile
 must refer to the directory where the backup file will be saved
 **(with no '/' at the end)**
@@ -99,6 +104,12 @@ the dot '.'
 -> in the **restore** command, the argument passed as pathToFile
 must refer to the file itself 
 >_(eg: /home/user/desktop/backup_folder/backup.csv)_
+
+## What's implemented
+
+Every command requested including the BONUS options of each one, except for the
+_**status**_ command.
+
 
 ## Myself
 
