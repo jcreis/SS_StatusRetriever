@@ -117,11 +117,3 @@ _**status**_ command.
     Faculdade de Ciências e Tecnologia da Universidade Nova de Lisboa (FCT-UNL)
     Mestrado Integrado em Engenharia Informática
     5th year student
-
-
-##########################################################
-Don't forget to provide a README.md file with:
-Your name, e-mail address, college name, degree and attendance year;
-Descrive your solution and
-
-relevant design decisions.
