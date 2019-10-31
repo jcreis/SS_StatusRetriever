@@ -111,5 +111,3 @@ must refer to the file itself
 
     João Carlos Cristo Reis - jcreiswork@gmail.com
     Faculdade de Ciências e Tecnologia da Universidade Nova de Lisboa (FCT-UNL)
-    Mestrado Integrado em Engenharia Informática
-    5th year student
