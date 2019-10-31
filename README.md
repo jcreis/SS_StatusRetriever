@@ -1,4 +1,4 @@
-## _Code Challenge for Mercedes-Benz.io_
+## _Small shell app_
 
 
 
@@ -105,10 +105,6 @@ the dot '.'
 must refer to the file itself 
 >_(eg: /home/user/desktop/backup_folder/backup.csv)_
 
-## What's implemented
-
-Every command requested including the BONUS options of each one, except for the
-_**status**_ command.
 
 
 ## Myself
