@@ -1,4 +1,4 @@
-## _Small shell app_
+## _Small Spring Shell app_
 
 
 
