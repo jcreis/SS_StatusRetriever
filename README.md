@@ -109,5 +109,4 @@ must refer to the file itself
 
 ## Myself
 
-    João Carlos Cristo Reis - jcreiswork@gmail.com
-    Faculdade de Ciências e Tecnologia da Universidade Nova de Lisboa (FCT-UNL)
+    João Reis - jcreiswork@gmail.com
