@@ -1,4 +1,4 @@
-## _Small Spring Shell app_
+## _Spring Shell Status Retriever app_
 
 
 
